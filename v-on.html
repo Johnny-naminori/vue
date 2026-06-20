@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue.js v-on</title>
+  <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div id="app" class="container mt-4">
+    <h1 class="bg-secondary text-white p-2">Vue3</h1>
+
+    <p class="mt-3">ボタンをクリックすると、現在日時を表示します。</p>
+
+    <button class="btn btn-primary" v-on:click="onClick">
+      マウスをクリック
+    </button>
+
+    <p class="mt-3">現在日時：{{ now }}</p>
+  </div>
+
+  <script>
+    const appdata = {
+      data() {
+        return {
+          now: '-'
+        }
+      },
+      methods: {
+        onClick() {
+          const date = new Date()
+          this.now = date.toLocaleString('ja-JP')
+        }
+      }
+    }
+
+    Vue.createApp(appdata).mount('#app')
+  </script>
+</body>
+</html>

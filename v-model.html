@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue.js v-model</title>
+  <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div id="app" class="container mt-4">
+    <h1 class="bg-secondary text-white p-2">Vue3</h1>
+
+    <p class="mt-3">入力した文字をボタンで表示します。</p>
+
+    <input type="text" class="form-control" v-model="message">
+
+    <p class="mt-3">入力中の文字：{{ message }}</p>
+
+    <button class="btn btn-primary" v-on:click="onClick">
+      入力内容を表示
+    </button>
+  </div>
+
+  <script>
+    const appdata = {
+      data() {
+        return {
+          message: ''
+        }
+      },
+      methods: {
+        onClick() {
+          alert(this.message)
+        }
+      }
+    }
+
+    Vue.createApp(appdata).mount('#app')
+  </script>
+</body>
+</html>
