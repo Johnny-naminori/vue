@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Vue Dynamic Component Sample</title>
+  <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script>
+  <style>
+    .demo {
+      font-family: sans-serif;
+      border: 1px solid #eee;
+      border-radius: 2px;
+      padding: 20px 30px;
+      margin-top: 1em;
+      margin-bottom: 40px;
+      user-select: none;
+      overflow-x: auto;
+    }
+
+    .tab-button {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      background: #f0f0f0;
+      cursor: pointer;
+      margin-right: 4px;
+    }
+
+    .tab-button.active {
+      background: #ddd;
+      font-weight: bold;
+    }
+
+    .tab {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="dynamic-component-demo" class="demo">
+    <button
+      v-for="tab in tabs"
+      v-bind:key="tab"
+      v-bind:class="['tab-button', { active: currentTab === tab }]"
+      v-on:click="currentTab = tab"
+    >
+      {{ tab }}
+    </button>
+
+    <component v-bind:is="currentTabComponent" class="tab"></component>
+  </div>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          currentTab: 'Home',
+          tabs: ['Home', 'Posts', 'Archive']
+        }
+      },
+      computed: {
+        currentTabComponent() {
+          return 'tab-' + this.currentTab.toLowerCase()
+        }
+      }
+    })
+
+    app.component('tab-home', {
+      template: `<div>Home コンポーネントの内容です。</div>`
+    })
+
+    app.component('tab-posts', {
+      template: `<div>Posts コンポーネントの内容です。</div>`
+    })
+
+    app.component('tab-archive', {
+      template: `<div>Archive コンポーネントの内容です。</div>`
+    })
+
+    app.mount('#dynamic-component-demo')
+  </script>
+</body>
+</html>
