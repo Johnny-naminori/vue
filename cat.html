@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Random Cat Image</title>
+
+  <script src="https://unpkg.com/vue@3.0.0/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/axios@0.23.0/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h1>Random Cat Image</h1>
+
+    <img v-bind:src="catImage" width="300">
+    <br>
+
+    <button v-on:click="getRandomCatImage">
+      Get New Cat
+    </button>
+  </div>
+
+  <script>
+    const appdata = {
+      data() {
+        return {
+          catImage: ''
+        }
+      },
+
+      mounted() {
+        this.getRandomCatImage()
+      },
+
+      methods: {
+        getRandomCatImage() {
+          axios.get('https://api.thecatapi.com/v1/images/search')
+            .then((response) => {
+              this.catImage = response.data[0].url
+            })
+            .catch((error) => {
+              console.error(error)
+            })
+        }
+      }
+    }
+
+    Vue.createApp(appdata).mount('#app')
+  </script>
+</body>
+</html>

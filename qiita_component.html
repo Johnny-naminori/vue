@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Qiita Search Component</title>
+
+  <script src="https://unpkg.com/vue@3.0.0/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/axios@0.23.0/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <qiita-search></qiita-search>
+  </div>
+
+  <script>
+    const app = Vue.createApp({})
+
+    app.component('qiita-search', {
+      template: `
+        <div>
+          <h1>Qiita Search</h1>
+
+          <input type="text" v-model="keyword" placeholder="検索キーワードを入力">
+          <button v-on:click="searchQiita">検索</button>
+
+          <p>検索キーワード: {{ keyword }}</p>
+
+          <ul>
+            <li v-for="item in items">
+              <a v-bind:href="item.url" target="_blank">
+                {{ item.title }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      `,
+
+      data() {
+        return {
+          keyword: 'JavaScript',
+          items: []
+        }
+      },
+
+      mounted() {
+        this.searchQiita()
+      },
+
+      methods: {
+        searchQiita() {
+          const params = {
+            page: 1,
+            per_page: 20,
+            query: this.keyword
+          }
+
+          axios.get('https://qiita.com/api/v2/items', { params })
+            .then((response) => {
+              this.items = response.data
+            })
+            .catch((error) => {
+              console.error(error)
+            })
+        }
+      }
+    })
+
+    app.mount('#app')
+  </script>
+</body>
+</html>
