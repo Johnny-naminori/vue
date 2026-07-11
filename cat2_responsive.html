@@ -2,10 +2,48 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Random Cat Image</title>
 
   <script src="https://unpkg.com/vue@3.0.0/dist/vue.global.js"></script>
   <script src="https://unpkg.com/axios@0.23.0/dist/axios.min.js"></script>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+  }
+
+  #app {
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 20px;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+</style>
 </head>
 
 <body>

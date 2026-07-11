@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>MongoDB Notes</title>
+
+  <!-- Vue.js -->
+  <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script>
+
+  <!-- Axios -->
+  <script src="https://unpkg.com/axios@0.23.0/dist/axios.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+  >
+</head>
+
+<body>
+  <div id="app" class="container mt-4">
+
+    <h1 class="bg-secondary text-white p-3">
+      MongoDB Notes
+    </h1>
+
+    <p class="text-center">
+      MongoDBに保存されているノートデータを表示します
+    </p>
+
+    <!-- 読み込み中 -->
+    <div v-if="loading" class="alert alert-info">
+      データを読み込んでいます。
+    </div>
+
+    <!-- エラー発生時 -->
+    <div v-if="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <!-- ノート一覧 -->
+    <div v-if="!loading && notes.length > 0" class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Sub Title</th>
+            <th>Body Text</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            v-for="note in notes"
+            :key="note._id || note.id"
+          >
+            <td>{{ note.id }}</td>
+            <td>{{ note.title }}</td>
+            <td>{{ note.subTitle }}</td>
+            <td>{{ note.bodyText }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- データが0件の場合 -->
+    <div
+      v-if="!loading && !errorMessage && notes.length === 0"
+      class="alert alert-warning"
+    >
+      表示するノートデータがありません。
+    </div>
+
+    <!-- 再読み込みボタン -->
+    <button
+      type="button"
+      class="btn btn-primary"
+      @click="getNotes"
+    >
+      データを再読み込み
+    </button>
+
+  </div>
+
+  <script>
+    const appdata = {
+      data() {
+        return {
+          notes: [],
+          loading: false,
+          errorMessage: ''
+        }
+      },
+
+      mounted() {
+        this.getNotes()
+      },
+
+      methods: {
+        getNotes() {
+          this.loading = true
+          this.errorMessage = ''
+
+          axios
+            .get('http://localhost:30141/notes')
+            .then((response) => {
+              this.notes = response.data
+            })
+            .catch((error) => {
+              console.error(error)
+              this.errorMessage =
+                'ノートデータを取得できませんでした。Expressが起動しているか確認してください。'
+            })
+            .finally(() => {
+              this.loading = false
+            })
+        }
+      }
+    }
+
+    Vue.createApp(appdata).mount('#app')
+  </script>
+</body>
+
+</html>
